@@ -1,0 +1,16 @@
+Resources:
+  ImagesTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: 'Images'
+      AttributeDefinitions:
+        - AttributeName: 'user_id'
+          AttributeType: 'S'
+        - AttributeName: 'image_id'
+          AttributeType: 'S'
+      KeySchema:
+        - AttributeName: 'user_id'
+          KeyType: 'HASH'
+        - AttributeName: 'image_id'
+          KeyType: 'RANGE'
+      BillingMode: 'PAY_PER_REQUEST'

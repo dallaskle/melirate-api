@@ -1,0 +1,16 @@
+Resources:
+  WeightsTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: 'Weights'
+      AttributeDefinitions:
+        - AttributeName: 'user_id'
+          AttributeType: 'S'
+        - AttributeName: 'weight_id'
+          AttributeType: 'S'
+      KeySchema:
+        - AttributeName: 'user_id'
+          KeyType: 'HASH'
+        - AttributeName: 'weight_id'
+          KeyType: 'RANGE'
+      BillingMode: 'PAY_PER_REQUEST'

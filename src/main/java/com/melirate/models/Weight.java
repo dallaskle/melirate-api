@@ -1,69 +1,128 @@
 package com.melirate.models;
 
-import java.time.LocalDateTime;
-import java.util.Objects;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
+@DynamoDBTable(tableName = "Weights")
 public class Weight {
 
-    private int weightId;
-    private User user;
-    private LocalDateTime timestamp;
-    private double bodyWeight;
-    private double fat;
-    private double muscle;
-    private double hydration;
+    private String userId;
+    private String weightId;
+    private Double bodyWeight;
+    private Double bodyFat;
+    private Double muscle;
+    private Double hydration;
+    private String timestamp;
 
-    public int getWeightId() {
+    public Weight() {
+    }
+
+    @DynamoDBHashKey(attributeName = "user_id")
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    @DynamoDBRangeKey(attributeName = "weight_id")
+    public String getWeightId() {
         return weightId;
     }
 
-    public User getUser() {
-        return user;
+    public void setWeightId(String weightId) {
+        this.weightId = weightId;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public double getBodyWeight() {
+    @DynamoDBAttribute(attributeName = "body_weight")
+    public Double getBodyWeight() {
         return bodyWeight;
     }
 
-    public double getFat() {
-        return fat;
+    public void setBodyWeight(Double bodyWeight) {
+        this.bodyWeight = bodyWeight;
     }
 
-    public double getMuscle() {
+    @DynamoDBAttribute(attributeName = "body_fat")
+    public Double getBodyFat() {
+        return bodyFat;
+    }
+
+    public void setBodyFat(Double bodyFat) {
+        this.bodyFat = bodyFat;
+    }
+
+    @DynamoDBAttribute(attributeName = "muscle")
+    public Double getMuscle() {
         return muscle;
     }
 
-    public double getHydration() {
+    public void setMuscle(Double muscle) {
+        this.muscle = muscle;
+    }
+
+    @DynamoDBAttribute(attributeName = "hydration")
+    public Double getHydration() {
         return hydration;
     }
 
+    public void setHydration(Double hydration) {
+        this.hydration = hydration;
+    }
+
+    @DynamoDBAttribute(attributeName = "timestamp")
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Weight weight = (Weight) o;
-        return getWeightId() == weight.getWeightId() && Double.compare(weight.getBodyWeight(), getBodyWeight()) == 0 && Double.compare(weight.getFat(), getFat()) == 0 && Double.compare(weight.getMuscle(), getMuscle()) == 0 && Double.compare(weight.getHydration(), getHydration()) == 0 && Objects.equals(getUser(), weight.getUser()) && Objects.equals(getTimestamp(), weight.getTimestamp());
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof Weight)) {
+            return false;
+        }
+        Weight other = (Weight) obj;
+        return this.userId.equals(other.getUserId()) &&
+                this.weightId.equals(other.getWeightId()) &&
+                this.bodyWeight.equals(other.getBodyWeight()) &&
+                this.bodyFat.equals(other.getBodyFat()) &&
+                this.muscle.equals(other.getMuscle()) &&
+                this.hydration.equals(other.getHydration()) &&
+                this.timestamp.equals(other.getTimestamp());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getWeightId(), getUser(), getTimestamp(), getBodyWeight(), getFat(), getMuscle(), getHydration());
+        int result = 17;
+        result = 31 * result + this.userId.hashCode();
+        result = 31 * result + this.weightId.hashCode();
+        result = 31 * result + this.bodyWeight.hashCode();
+        result = 31 * result + this.bodyFat.hashCode();
+        result = 31 * result + this.muscle.hashCode();
+        result = 31 * result + this.hydration.hashCode();
+        result = 31 * result + this.timestamp.hashCode();
+        return result;
     }
 
     @Override
     public String toString() {
         return "Weight{" +
-                "weightId=" + weightId +
-                ", user=" + user +
-                ", timestamp=" + timestamp +
+                "userId='" + userId + '\'' +
+                ", weightId='" + weightId + '\'' +
                 ", bodyWeight=" + bodyWeight +
-                ", fat=" + fat +
+                ", bodyFat=" + bodyFat +
                 ", muscle=" + muscle +
                 ", hydration=" + hydration +
+                ", timestamp=" + timestamp +
                 '}';
     }
 }

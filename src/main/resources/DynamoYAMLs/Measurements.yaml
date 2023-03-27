@@ -1,0 +1,16 @@
+Resources:
+  MeasurementsTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: 'Measurements'
+      AttributeDefinitions:
+        - AttributeName: 'user_id'
+          AttributeType: 'S'
+        - AttributeName: 'measurement_id'
+          AttributeType: 'S'
+      KeySchema:
+        - AttributeName: 'user_id'
+          KeyType: 'HASH'
+        - AttributeName: 'measurement_id'
+          KeyType: 'RANGE'
+      BillingMode: 'PAY_PER_REQUEST'
