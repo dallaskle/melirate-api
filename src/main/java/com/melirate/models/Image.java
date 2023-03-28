@@ -1,34 +1,68 @@
 package com.melirate.models;
 
-import java.time.LocalDateTime;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+
 import java.util.Objects;
 
+@DynamoDBTable(tableName = "Images")
 public class Image {
 
-    private int imageId;
-    private User user;
-    private LocalDateTime timestamp;
+    private String imageId;
+    private String userId;
+    private String timestamp;
     private String imageUrl;
-    private View view;
+    private String view;
 
-    public int getImageId() {
+    public Image() {
+
+    }
+
+    @DynamoDBHashKey(attributeName = "user_id")
+    public String getUserId() {
+        return userId;
+    }
+
+    @DynamoDBRangeKey(attributeName = "image_id")
+    public String getImageId() {
         return imageId;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public LocalDateTime getTimestamp() {
+    @DynamoDBAttribute(attributeName = "timestamp")
+    public String getTimestamp() {
         return timestamp;
     }
 
+    @DynamoDBAttribute(attributeName = "imageUrl")
     public String getImageUrl() {
         return imageUrl;
     }
 
-    public View getView() {
+    @DynamoDBAttribute(attributeName = "view")
+    public String getView() {
         return view;
+    }
+
+    public void setImageId(String imageId) {
+        this.imageId = imageId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public void setView(String view) {
+        this.view = view;
     }
 
     @Override
@@ -36,19 +70,19 @@ public class Image {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Image image = (Image) o;
-        return getImageId() == image.getImageId() && Objects.equals(getUser(), image.getUser()) && Objects.equals(getTimestamp(), image.getTimestamp()) && Objects.equals(getImageUrl(), image.getImageUrl()) && getView() == image.getView();
+        return getImageId() == image.getImageId() && Objects.equals(getUserId(), image.getUserId()) && Objects.equals(getTimestamp(), image.getTimestamp()) && Objects.equals(getImageUrl(), image.getImageUrl()) && getView() == image.getView();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getImageId(), getUser(), getTimestamp(), getImageUrl(), getView());
+        return Objects.hash(getImageId(), getUserId(), getTimestamp(), getImageUrl(), getView());
     }
 
     @Override
     public String toString() {
         return "Image{" +
                 "imageId=" + imageId +
-                ", user=" + user +
+                ", user=" + userId +
                 ", timestamp=" + timestamp +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", view=" + view +
