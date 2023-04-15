@@ -109,4 +109,5 @@ public class Weight {
                 ", timestamp=" + timestamp +
                 '}';
     }
+
 }
