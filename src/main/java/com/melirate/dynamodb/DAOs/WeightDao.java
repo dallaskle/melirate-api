@@ -1,4 +1,4 @@
-package com.melirate.Daos;
+package com.melirate.dynamodb.DAOs;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
