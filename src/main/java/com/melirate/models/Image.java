@@ -13,7 +13,6 @@ public class Image {
     private String view;
 
     public Image() {
-
     }
 
     @DynamoDBHashKey(attributeName = "user_id")
