@@ -1,23 +1,53 @@
 package com.melirate.models;
 
 import java.util.Objects;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 
+@DynamoDBTable(tableName = "melirate-users")
 public class User {
 
-    private int id;
-    private String name;
-    private String birthday;
+    private String id;
+    private String timestamp;
+    private String firstName;
+    private String lastName;
 
-    public int getId() {
+    public User() {
+    }
+
+    @DynamoDBHashKey(attributeName = "id")
+    public String getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getBirthday() {
-        return birthday;
+    @DynamoDBRangeKey(attributeName = "timestamp")
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    @DynamoDBAttribute(attributeName = "first_name")
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    @DynamoDBAttribute(attributeName = "last_name")
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     @Override
@@ -25,20 +55,21 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return getId() == user.getId() && getName().equals(user.getName()) && Objects.equals(getBirthday(), user.getBirthday());
+        return Objects.equals(getId(), user.getId()) && Objects.equals(getTimestamp(), user.getTimestamp()) && Objects.equals(getFirstName(), user.getFirstName()) && Objects.equals(getLastName(), user.getLastName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getBirthday());
+        return Objects.hash(getId(), getTimestamp(), getFirstName(), getLastName());
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", birthday='" + birthday + '\'' +
+                "id='" + id + '\'' +
+                ", timestamp='" + timestamp + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
                 '}';
     }
 }

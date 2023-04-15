@@ -1,106 +1,86 @@
 package com.melirate.models;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
-@DynamoDBTable(tableName = "Measurements")
+@DynamoDBTable(tableName = "melirate-measurements")
 public class Measurement {
 
-    private String measurementId;
     private String userId;
     private String timestamp;
-    private double chest;
-    private double shoulders;
-    private double stomach;
-    private double thighs;
-    private double calves;
-    private double arms;
+    private Double arms;
+    private Double calves;
+    private Double chest;
+    private Double shoulders;
+    private Double stomach;
+    private Double thighs;
+
+    public Measurement() {
+    }
 
     @DynamoDBHashKey(attributeName = "user_id")
     public String getUserId() {
         return userId;
     }
-
-    public void setMeasurementId(String measurementId) {
-        this.measurementId = measurementId;
-    }
-
-
-    @DynamoDBRangeKey(attributeName="measurement_id")
-    public String getMeasurementId() {
-        return measurementId;
-    }
-
     public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    @DynamoDBAttribute(attributeName = "timestamp")
+    @DynamoDBRangeKey(attributeName = "timestamp")
     public String getTimestamp() {
         return timestamp;
     }
-
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
-    @DynamoDBAttribute(attributeName = "chest")
-    public double getChest() {
-        return chest;
+    @DynamoDBAttribute(attributeName = "arms")
+    public Double getArms() {
+        return arms;
+    }
+    public void setArms(Double arms) {
+        this.arms = arms;
     }
 
-    public void setChest(double chest) {
+    @DynamoDBAttribute(attributeName = "calves")
+    public Double getCalves() {
+        return calves;
+    }
+    public void setCalves(Double calves) {
+        this.calves = calves;
+    }
+
+    @DynamoDBAttribute(attributeName = "chest")
+    public Double getChest() {
+        return chest;
+    }
+    public void setChest(Double chest) {
         this.chest = chest;
     }
 
     @DynamoDBAttribute(attributeName = "shoulders")
-    public double getShoulders() {
+    public Double getShoulders() {
         return shoulders;
     }
-
-    public void setShoulders(double shoulders) {
+    public void setShoulders(Double shoulders) {
         this.shoulders = shoulders;
     }
 
     @DynamoDBAttribute(attributeName = "stomach")
-    public double getStomach() {
+    public Double getStomach() {
         return stomach;
     }
-
-    public void setStomach(double stomach) {
+    public void setStomach(Double stomach) {
         this.stomach = stomach;
     }
 
     @DynamoDBAttribute(attributeName = "thighs")
-    public double getThighs() {
+    public Double getThighs() {
         return thighs;
     }
-
-    public void setThighs(double thighs) {
+    public void setThighs(Double thighs) {
         this.thighs = thighs;
-    }
-
-    @DynamoDBAttribute(attributeName = "calves")
-    public double getCalves() {
-        return calves;
-    }
-
-    public void setCalves(double calves) {
-        this.calves = calves;
-    }
-
-    @DynamoDBAttribute(attributeName = "arms")
-    public double getArms() {
-        return arms;
-    }
-
-    public void setArms(double arms) {
-        this.arms = arms;
     }
 
     @Override
@@ -108,26 +88,25 @@ public class Measurement {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Measurement that = (Measurement) o;
-        return getMeasurementId() == that.getMeasurementId() && Double.compare(that.getChest(), getChest()) == 0 && Double.compare(that.getShoulders(), getShoulders()) == 0 && Double.compare(that.getStomach(), getStomach()) == 0 && Double.compare(that.getThighs(), getThighs()) == 0 && Double.compare(that.getCalves(), getCalves()) == 0 && Double.compare(that.getArms(), getArms()) == 0 && Objects.equals(getUserId(), that.getUserId()) && Objects.equals(getTimestamp(), that.getTimestamp());
+        return Objects.equals(getUserId(), that.getUserId()) && Objects.equals(getTimestamp(), that.getTimestamp()) && Objects.equals(getArms(), that.getArms()) && Objects.equals(getCalves(), that.getCalves()) && Objects.equals(getChest(), that.getChest()) && Objects.equals(getShoulders(), that.getShoulders()) && Objects.equals(getStomach(), that.getStomach()) && Objects.equals(getThighs(), that.getThighs());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getMeasurementId(), getUserId(), getTimestamp(), getChest(), getShoulders(), getStomach(), getThighs(), getCalves(), getArms());
+        return Objects.hash(getUserId(), getTimestamp(), getArms(), getCalves(), getChest(), getShoulders(), getStomach(), getThighs());
     }
 
     @Override
     public String toString() {
         return "Measurement{" +
-                "measurementId=" + measurementId +
-                ", userId=" + userId +
-                ", timestamp=" + timestamp +
+                "userId='" + userId + '\'' +
+                ", timestamp='" + timestamp + '\'' +
+                ", arms=" + arms +
+                ", calves=" + calves +
                 ", chest=" + chest +
                 ", shoulders=" + shoulders +
                 ", stomach=" + stomach +
                 ", thighs=" + thighs +
-                ", calves=" + calves +
-                ", arms=" + arms +
                 '}';
     }
 }
