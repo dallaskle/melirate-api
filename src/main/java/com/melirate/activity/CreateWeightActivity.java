@@ -20,7 +20,7 @@ public class CreateWeightActivity implements RequestHandler<CreateWeightRequest,
 
         JwtValidator jwtValidator = new JwtValidator();
         if (!jwtValidator.validateToken(token, userId)) {
-            throw new RuntimeException("Invalid Token: " + token + " for user id: " + userId);
+            throw new RuntimeException("Invalid Token.");
         }
 
         Weight weight = new Weight();
@@ -28,23 +28,11 @@ public class CreateWeightActivity implements RequestHandler<CreateWeightRequest,
         weight.setTimestamp(request.getTimestamp());
         try {
             weight.setBodyWeight(Double.valueOf(request.getBodyWeight()));
-        } catch(NumberFormatException e) {
-            System.out.println("No Body Weight");
-        }
-        try {
             weight.setBodyFat(Double.valueOf(request.getBodyFat()));
-        } catch(NumberFormatException e) {
-            System.out.println("No Body Fat");
-        }
-        try {
             weight.setMuscle(Double.valueOf(request.getMuscle()));
-        } catch(NumberFormatException e) {
-            System.out.println("No Muscle");
-        }
-        try {
             weight.setHydration(Double.valueOf(request.getHydration()));
         } catch(NumberFormatException e) {
-            System.out.println("No Hydration");
+            throw new NumberFormatException("Input values are formatted incorrectly.");
         }
 
         WeightDao weightDao = new WeightDao();

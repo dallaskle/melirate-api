@@ -14,22 +14,35 @@ public class GetWeightActivity implements RequestHandler<APIGatewayProxyRequestE
     @Override
     public Weight handleRequest(final APIGatewayProxyRequestEvent request, Context context) {
 
-        context.getLogger().log("Handling request body " + request.getBody());
-        context.getLogger().log("Handling request path " + request.getPath());
-        // context.getLogger().log("Handling request pathParameters " + request.getPathParameters().toString());
-        context.getLogger().log("Handling request headers " + request.getHeaders());
-        context.getLogger().log("Handling request " + request);
+        String token;
+        String userId;
 
-        String token = request.getHeaders().get("Authorization");
-        String userId = request.getPath();
+        try {
+            token = request.getHeaders().get("Authorization");
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Must include token.");
+        }
+        try {
+            userId = request.getPath();
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Must have user_id.");
+        }
+
 
         JwtValidator jwtValidator = new JwtValidator();
         if (!jwtValidator.validateToken(token, userId)) {
-            throw new RuntimeException("Invalid Token: " + token + " for user id: " + userId);
+            throw new RuntimeException("Invalid Token.");
         }
 
-        Map<String, String> params =  request.getQueryStringParameters();
-        String timestamp = params.get("timestamp");
+        Map<String, String> params;
+        String timestamp;
+
+        try {
+            params =  request.getQueryStringParameters();
+            timestamp = params.get("timestamp");
+        } catch (Exception e) {
+            throw new NullPointerException("Must include timestamp.");
+        }
 
         Weight weight = new Weight();
         weight.setUserId(userId);

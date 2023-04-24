@@ -5,6 +5,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.melirate.models.Weight;
+import com.melirate.utils.Users;
 
 import java.util.List;
 
@@ -14,9 +15,20 @@ public class WeightDao {
     }
 
     public Weight loadWeight(Weight _weight) {
+
+        if (_weight.getUserId() == null ) {
+            throw new NullPointerException("Must have user_id!");
+        }
+        if (_weight.getTimestamp() == null ) {
+            throw new NullPointerException("Must include timestamp.");
+        }
+
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
         DynamoDBMapper dynamoDBMapper = new DynamoDBMapper(client);
         Weight weight = dynamoDBMapper.load(Weight.class, _weight.getUserId(), _weight.getTimestamp());
+        if (weight == null) {
+            throw new NullPointerException("Can't find this weight entry.");
+        }
         return weight;
     }
 
@@ -32,6 +44,14 @@ public class WeightDao {
     }
 
     public Weight saveWeight(Weight weight) {
+
+        if (weight.getUserId() == null ) {
+            throw new NullPointerException("Must have user_id!");
+        }
+        if (weight.getTimestamp() == null ) {
+            weight.setTimestamp(Users.generateTimestamp());
+        }
+
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
         DynamoDBMapper dynamoDBMapper = new DynamoDBMapper(client);
         dynamoDBMapper.save(weight);

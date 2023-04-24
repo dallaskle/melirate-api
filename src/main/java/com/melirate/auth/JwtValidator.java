@@ -15,6 +15,14 @@ public class JwtValidator {
     }
 
     public boolean validateToken(String jwtToken, String userId) {
+
+        if (jwtToken == null) {
+            throw new NullPointerException("Must include token.");
+        }
+        if (userId == null) {
+            throw new NullPointerException("Must have user_id!");
+        }
+
         Key key = Keys.hmacShaKeyFor(secretHolder.getSecret().getBytes(StandardCharsets.UTF_8));
 
         try {

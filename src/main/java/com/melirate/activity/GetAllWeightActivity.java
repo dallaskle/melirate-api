@@ -15,21 +15,26 @@ public class GetAllWeightActivity implements RequestHandler<APIGatewayProxyReque
     @Override
     public List<Weight> handleRequest(APIGatewayProxyRequestEvent request, Context context) {
 
-        context.getLogger().log("Handling request body " + request.getBody());
-        context.getLogger().log("Handling request path " + request.getPath());
-       // context.getLogger().log("Handling request pathParameters " + request.getPathParameters().toString());
-        context.getLogger().log("Handling request headers " + request.getHeaders());
-        context.getLogger().log("Handling request " + request);
+        String token;
+        String userId;
 
-        String id = request.getPath();
-        String token = request.getHeaders().get("Authorization");
+        try {
+            token = request.getHeaders().get("Authorization");
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Must include token.");
+        }
+        try {
+            userId = request.getPath();
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Must have user_id.");
+        }
 
         User user = new User();
-        user.setId(id);
+        user.setId(userId);
 
         JwtValidator jwtValidator = new JwtValidator();
         if (!jwtValidator.validateToken(token, user.getId())) {
-            throw new RuntimeException("Invalid Token: " + token + " for user id: " + user.getId());
+            throw new RuntimeException("Invalid Token.");
         }
 
         WeightDao weightDao = new WeightDao();
