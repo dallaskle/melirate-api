@@ -1,24 +1,54 @@
 package com.melirate.activity;
 
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.melirate.activity.Requests.CreateWeightRequest;
+import com.melirate.auth.JwtValidator;
 import com.melirate.dynamodb.DAOs.WeightDao;
 import com.melirate.models.Weight;
 
-public class CreateWeightActivity implements RequestHandler<Weight, Weight>{
+import java.util.IllegalFormatException;
+import java.util.Map;
+
+public class CreateWeightActivity implements RequestHandler<CreateWeightRequest, Weight>{
 
     @Override
-    public Weight handleRequest(Weight weight, Context context) {
-        WeightDao weightDao = new WeightDao();
-        try {
-            weightDao.saveWeight(weight);
-        } catch (Exception e) {
-            System.out.println("Exception!");
-            return new Weight();
+    public Weight handleRequest(CreateWeightRequest request, Context context) {
+
+        String token = request.getToken();
+        String userId = request.getUserId();
+
+        JwtValidator jwtValidator = new JwtValidator();
+        if (!jwtValidator.validateToken(token, userId)) {
+            throw new RuntimeException("Invalid Token: " + token + " for user id: " + userId);
         }
+
+        Weight weight = new Weight();
+        weight.setUserId(userId);
+        weight.setTimestamp(request.getTimestamp());
+        try {
+            weight.setBodyWeight(Double.valueOf(request.getBodyWeight()));
+        } catch(NumberFormatException e) {
+            System.out.println("No Body Weight");
+        }
+        try {
+            weight.setBodyFat(Double.valueOf(request.getBodyFat()));
+        } catch(NumberFormatException e) {
+            System.out.println("No Body Fat");
+        }
+        try {
+            weight.setMuscle(Double.valueOf(request.getMuscle()));
+        } catch(NumberFormatException e) {
+            System.out.println("No Muscle");
+        }
+        try {
+            weight.setHydration(Double.valueOf(request.getHydration()));
+        } catch(NumberFormatException e) {
+            System.out.println("No Hydration");
+        }
+
+        WeightDao weightDao = new WeightDao();
+        weightDao.saveWeight(weight);
         return weight;
     }
 }

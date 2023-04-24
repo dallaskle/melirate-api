@@ -1,21 +1,31 @@
 package com.melirate.dynamodb.Requests;
 
 public class AllWeightRequest {
-    private String userId;
+    private String id;
+    private String Authorization;
 
     public AllWeightRequest() {
 
     }
 
-    public AllWeightRequest(String userId) {
-        this.userId = userId;
+    public AllWeightRequest(String id, String Authorization) {
+        this.id = id;
+        this.Authorization = Authorization;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getId() {
+        return id;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getAuthorization() {
+        return Authorization;
+    }
+
+    public void setAuthorization(String Authorization) {
+        this.Authorization = Authorization;
     }
 }

@@ -1,6 +1,7 @@
 package com.melirate.models;
 
 import java.util.Objects;
+
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
 
 @DynamoDBTable(tableName = "melirate-users")
@@ -10,6 +11,8 @@ public class User {
     private String timestamp;
     private String firstName;
     private String lastName;
+    private String email;
+    private String password;
 
     public User() {
     }
@@ -50,17 +53,35 @@ public class User {
         this.lastName = lastName;
     }
 
+    @DynamoDBAttribute(attributeName = "email")
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @DynamoDBAttribute(attributeName = "password")
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(getId(), user.getId()) && Objects.equals(getTimestamp(), user.getTimestamp()) && Objects.equals(getFirstName(), user.getFirstName()) && Objects.equals(getLastName(), user.getLastName());
+        return getId().equals(user.getId()) && Objects.equals(getTimestamp(), user.getTimestamp()) && Objects.equals(getFirstName(), user.getFirstName()) && Objects.equals(getLastName(), user.getLastName()) && Objects.equals(getEmail(), user.getEmail()) && Objects.equals(getPassword(), user.getPassword());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getTimestamp(), getFirstName(), getLastName());
+        return Objects.hash(getId(), getTimestamp(), getFirstName(), getLastName(), getEmail(), getPassword());
     }
 
     @Override
@@ -70,6 +91,7 @@ public class User {
                 ", timestamp='" + timestamp + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 }

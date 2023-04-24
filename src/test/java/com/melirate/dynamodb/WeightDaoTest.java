@@ -25,7 +25,6 @@ public class WeightDaoTest {
     void saveWeight_correctEntry_returnsTrue() {
         //GIVEN
         Weight weight = new Weight();
-        weight.setWeightId("0");
         weight.setBodyWeight(76.0);
         weight.setBodyFat(.234);
         weight.setMuscle(37.2);

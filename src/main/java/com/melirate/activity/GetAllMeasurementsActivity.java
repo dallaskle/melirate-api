@@ -21,7 +21,7 @@ public class GetAllMeasurementsActivity implements RequestHandler<AllWeightReque
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
         DynamoDBMapper dynamoDBMapper = new DynamoDBMapper(client);
         Measurement measurement = new Measurement();
-        measurement.setUserId(request.getUserId());
+        measurement.setUserId(request.getId());
         DynamoDBQueryExpression<Measurement> queryExpression = new DynamoDBQueryExpression<Measurement>()
                 .withHashKeyValues(measurement);
         List<Measurement> measurements = dynamoDBMapper.query(Measurement.class, queryExpression);
