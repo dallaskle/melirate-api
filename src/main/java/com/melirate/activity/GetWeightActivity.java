@@ -20,18 +20,18 @@ public class GetWeightActivity implements RequestHandler<APIGatewayProxyRequestE
         try {
             token = request.getHeaders().get("Authorization");
         } catch (Exception e) {
-            throw new IllegalArgumentException("Must include token.");
+            throw new IllegalArgumentException("401: Must include token.");
         }
         try {
             userId = request.getPath();
         } catch (Exception e) {
-            throw new IllegalArgumentException("Must have user_id.");
+            throw new IllegalArgumentException("400-06: Must have user_id.");
         }
 
 
         JwtValidator jwtValidator = new JwtValidator();
         if (!jwtValidator.validateToken(token, userId)) {
-            throw new RuntimeException("Invalid Token.");
+            throw new RuntimeException("403: Invalid Token.");
         }
 
         Map<String, String> params;
@@ -41,7 +41,7 @@ public class GetWeightActivity implements RequestHandler<APIGatewayProxyRequestE
             params =  request.getQueryStringParameters();
             timestamp = params.get("timestamp");
         } catch (Exception e) {
-            throw new NullPointerException("Must include timestamp.");
+            throw new NullPointerException("400-07: Must include timestamp.");
         }
 
         Weight weight = new Weight();

@@ -15,10 +15,10 @@ public class UserAuthService {
     public LoginResponse loginWithEmailPassword(String email, String password) {
 
         if (email == null) { //Needs to have an email
-            throw new IllegalArgumentException("Must have email!");
+            throw new IllegalArgumentException("400-01: Must have email!");
         }
         if (password == null) { //Needs to have a password --> can remove if there's forget password option, or email to sign in
-            throw new IllegalArgumentException("Must have password!");
+            throw new IllegalArgumentException("400-02: Must have password!");
         }
 
         User user = new User();
@@ -29,11 +29,11 @@ public class UserAuthService {
         try {
             user = userDao.loadUserByEmail(user);
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Can't login. Incorrect email and/or password.");
+            throw new IllegalArgumentException("400-03a: Can't login. Incorrect email and/or password.");
         }
 
         if (!PasswordHasher.checkPassword(password, user.getPassword())) {
-            throw new IllegalArgumentException("Can't login. Incorrect email and/or password.");
+            throw new IllegalArgumentException("400-03b: Can't login. Incorrect email and/or password.");
         }
 
         JwtGenerator jwtGenerator = new JwtGenerator();
@@ -54,11 +54,7 @@ public class UserAuthService {
 
         String token;
 
-        try {
-            user = userDao.saveUser(user);;
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Can't signup. " + e.getLocalizedMessage());
-        }
+        user = userDao.saveUser(user);
 
         JwtGenerator jwtGenerator = new JwtGenerator();
         token = jwtGenerator.generateToken(user.getId());

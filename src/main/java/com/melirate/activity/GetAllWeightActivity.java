@@ -21,12 +21,12 @@ public class GetAllWeightActivity implements RequestHandler<APIGatewayProxyReque
         try {
             token = request.getHeaders().get("Authorization");
         } catch (Exception e) {
-            throw new IllegalArgumentException("Must include token.");
+            throw new IllegalArgumentException("401: Must include token.");
         }
         try {
             userId = request.getPath();
         } catch (Exception e) {
-            throw new IllegalArgumentException("Must have user_id.");
+            throw new IllegalArgumentException("400-06: Must have user_id.");
         }
 
         User user = new User();
@@ -34,7 +34,7 @@ public class GetAllWeightActivity implements RequestHandler<APIGatewayProxyReque
 
         JwtValidator jwtValidator = new JwtValidator();
         if (!jwtValidator.validateToken(token, user.getId())) {
-            throw new RuntimeException("Invalid Token.");
+            throw new RuntimeException("403: Invalid Token.");
         }
 
         WeightDao weightDao = new WeightDao();

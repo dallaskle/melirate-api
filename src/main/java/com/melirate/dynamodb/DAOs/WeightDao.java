@@ -17,17 +17,17 @@ public class WeightDao {
     public Weight loadWeight(Weight _weight) {
 
         if (_weight.getUserId() == null ) {
-            throw new NullPointerException("Must have user_id!");
+            throw new NullPointerException("400-06: Must have user_id!");
         }
         if (_weight.getTimestamp() == null ) {
-            throw new NullPointerException("Must include timestamp.");
+            throw new NullPointerException("400-07: Must include timestamp.");
         }
 
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
         DynamoDBMapper dynamoDBMapper = new DynamoDBMapper(client);
         Weight weight = dynamoDBMapper.load(Weight.class, _weight.getUserId(), _weight.getTimestamp());
         if (weight == null) {
-            throw new NullPointerException("Can't find this weight entry.");
+            throw new NullPointerException("400-08: Can't find this weight entry.");
         }
         return weight;
     }
@@ -46,7 +46,7 @@ public class WeightDao {
     public Weight saveWeight(Weight weight) {
 
         if (weight.getUserId() == null ) {
-            throw new NullPointerException("Must have user_id!");
+            throw new NullPointerException("400-06: Must have user_id!");
         }
         if (weight.getTimestamp() == null ) {
             weight.setTimestamp(Users.generateTimestamp());

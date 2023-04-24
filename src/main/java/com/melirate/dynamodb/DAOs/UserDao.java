@@ -29,10 +29,10 @@ public class UserDao {
     public User loadUserByEmailAndPassword(User _user) {
 
         if (_user.getEmail() == null) { //Needs to have an email
-            throw new IllegalArgumentException("Must have email!");
+            throw new IllegalArgumentException("400-01: Must have email!");
         }
         if (_user.getPassword() == null) { //Needs to have a password --> can remove if there's forget password option, or email to sign in
-            throw new IllegalArgumentException("Must have password!");
+            throw new IllegalArgumentException("400-02: Must have password!");
         }
 
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
@@ -60,14 +60,14 @@ public class UserDao {
             return existingUsers.get(0);
         } else {
             // no user with matching email and password was found
-            throw new IllegalArgumentException("No account found with this email and password combination.");
+            throw new IllegalArgumentException("400-03b: No account found with this email and password combination.");
         }
     }
 
     public User loadUserByEmail(User _user) {
 
         if (_user.getEmail() == null) { //Needs to have an email
-            throw new IllegalArgumentException("Must have email!");
+            throw new IllegalArgumentException("400-01: Must have email!");
         }
 
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
@@ -92,17 +92,17 @@ public class UserDao {
             return existingUsers.get(0);
         } else {
             // no user with matching email and password was found
-            throw new IllegalArgumentException("No account found with this email.");
+            throw new IllegalArgumentException("400-03c: No account found with this email.");
         }
     }
 
     public User saveUser(User user) {
 
         if (user.getEmail() == null) { //Needs to have an email
-            throw new IllegalArgumentException("Must have email!");
+            throw new IllegalArgumentException("400-01: Must have email!");
         }
         if (user.getPassword() == null) { //Needs to have a password --> can remove if there's forget password option, or email to sign in
-            throw new IllegalArgumentException("Must have password!");
+            throw new IllegalArgumentException("400-02: Must have password!");
         }
         if (user.getId() == null) { //Needs to have an id
             user.setId(Users.generateId());
@@ -112,10 +112,10 @@ public class UserDao {
         }
 
         if (!Users.isValidEmail(user.getEmail())) {
-            throw new IllegalArgumentException("Must have a valid email.");
+            throw new IllegalArgumentException("400-04: Must have a valid email.");
         }
         if (!Users.hasPasswordRequirements(user.getPassword())) {
-            throw new IllegalArgumentException("Must have a password with at least 8 characters, an uppercase letter, a lowercase letter, a digit, and a special character.");
+            throw new IllegalArgumentException("400-05: Must have a password with at least 8 characters, an uppercase letter, a lowercase letter, a digit, and a special character.");
         }
         user.setPassword(PasswordHasher.hashPassword(user.getPassword()));
 
@@ -148,7 +148,7 @@ public class UserDao {
 
                 for (User thisUser : existingUsers) {
                     if (thisUser.getEmail().equals(user.getEmail())) {
-                        throw new IllegalArgumentException("Email already exists.");
+                        throw new IllegalArgumentException("400-03a: Email already exists.");
                     } else if (thisUser.getId().equals(user.getId())) {
                         user.setId(Users.generateId());
                     }

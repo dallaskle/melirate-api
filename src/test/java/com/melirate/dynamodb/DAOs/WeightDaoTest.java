@@ -10,13 +10,13 @@ import org.junit.jupiter.api.Test;
 public class WeightDaoTest {
     private AmazonDynamoDB client;
     private DynamoDBMapper dynamoDBMapper;
-    private com.melirate.dynamodb.WeightDao weightDao;
+    private WeightDao weightDao;
 
     @BeforeEach
     private void setup() {
         client = AmazonDynamoDBClientBuilder.standard().build();
         dynamoDBMapper = new DynamoDBMapper(client);
-        weightDao = new WeightDao(dynamoDBMapper);
+        weightDao = new WeightDao();
     }
 
     @Test

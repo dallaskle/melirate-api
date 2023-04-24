@@ -17,7 +17,7 @@ public class CreateWeightActivity implements RequestHandler<CreateWeightRequest,
 
         JwtValidator jwtValidator = new JwtValidator();
         if (!jwtValidator.validateToken(token, userId)) {
-            throw new RuntimeException("Invalid Token.");
+            throw new RuntimeException("403: Invalid Token.");
         }
 
         Weight weight = new Weight();
@@ -29,7 +29,7 @@ public class CreateWeightActivity implements RequestHandler<CreateWeightRequest,
             weight.setMuscle(Double.valueOf(request.getMuscle()));
             weight.setHydration(Double.valueOf(request.getHydration()));
         } catch(NumberFormatException e) {
-            throw new NumberFormatException("Input values are formatted incorrectly.");
+            throw new NumberFormatException("400-09: Input values are formatted incorrectly.");
         }
 
         WeightDao weightDao = new WeightDao();
