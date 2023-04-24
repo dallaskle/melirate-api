@@ -1,4 +1,4 @@
-package com.melirate.models;
+package com.melirate.dynamodb.models;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
 

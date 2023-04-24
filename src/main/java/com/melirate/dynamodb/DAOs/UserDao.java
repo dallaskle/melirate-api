@@ -6,7 +6,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.melirate.auth.PasswordHasher;
-import com.melirate.models.User;
+import com.melirate.dynamodb.models.User;
 import com.melirate.utils.Users;
 
 import java.util.*;

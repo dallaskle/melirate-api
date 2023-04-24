@@ -1,10 +1,6 @@
-package com.melirate.dynamodb;
+package com.melirate.dynamodb.DAOs;
 
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.melirate.dynamodb.DAOs.UserDao;
-import com.melirate.models.User;
+import com.melirate.dynamodb.models.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

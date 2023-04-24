@@ -1,6 +1,6 @@
-package com.melirate.auth.Responses;
+package com.melirate.activity.auth.Responses;
 
-import com.melirate.models.User;
+import com.melirate.dynamodb.models.User;
 
 public class LoginResponse {
     private User user;

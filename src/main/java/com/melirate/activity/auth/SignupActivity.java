@@ -2,7 +2,7 @@ package com.melirate.activity.auth;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.melirate.activity.auth.Requests.SignupRequest;
-import com.melirate.auth.Responses.LoginResponse;
+import com.melirate.activity.auth.Responses.LoginResponse;
 import com.melirate.auth.UserAuthService;
 import com.melirate.dynamodb.DAOs.UserDao;
 

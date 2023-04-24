@@ -5,10 +5,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.melirate.activity.Requests.CreateWeightRequest;
 import com.melirate.auth.JwtValidator;
 import com.melirate.dynamodb.DAOs.WeightDao;
-import com.melirate.models.Weight;
-
-import java.util.IllegalFormatException;
-import java.util.Map;
+import com.melirate.dynamodb.models.Weight;
 
 public class CreateWeightActivity implements RequestHandler<CreateWeightRequest, Weight>{
 

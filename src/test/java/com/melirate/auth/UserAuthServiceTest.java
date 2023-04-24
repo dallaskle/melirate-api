@@ -1,12 +1,10 @@
 package com.melirate.auth;
 
-import com.melirate.auth.Responses.LoginResponse;
+import com.melirate.activity.auth.Responses.LoginResponse;
 import com.melirate.dynamodb.DAOs.UserDao;
-import com.melirate.models.User;
+import com.melirate.dynamodb.models.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 

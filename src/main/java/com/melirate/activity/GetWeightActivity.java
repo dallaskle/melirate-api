@@ -5,7 +5,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.melirate.auth.JwtValidator;
 import com.melirate.dynamodb.DAOs.WeightDao;
-import com.melirate.models.Weight;
+import com.melirate.dynamodb.models.Weight;
 
 import java.util.Map;
 

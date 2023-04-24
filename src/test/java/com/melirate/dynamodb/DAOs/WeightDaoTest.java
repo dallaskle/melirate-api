@@ -1,18 +1,16 @@
-package com.melirate.dynamodb;
+package com.melirate.dynamodb.DAOs;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.melirate.models.Weight;
+import com.melirate.dynamodb.models.Weight;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDateTime;
 
 public class WeightDaoTest {
     private AmazonDynamoDB client;
     private DynamoDBMapper dynamoDBMapper;
-    private WeightDao weightDao;
+    private com.melirate.dynamodb.WeightDao weightDao;
 
     @BeforeEach
     private void setup() {
