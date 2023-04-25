@@ -57,4 +57,19 @@ public class WeightDao {
         dynamoDBMapper.save(weight);
         return weight;
     }
+
+    public Weight deleteWeight(Weight weight) {
+
+        if (weight.getUserId() == null ) {
+            throw new NullPointerException("400-06: Must have user_id!");
+        }
+        if (weight.getTimestamp() == null ) {
+            throw new NullPointerException("400-10: Must have timestamp");
+        }
+
+        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
+        DynamoDBMapper dynamoDBMapper = new DynamoDBMapper(client);
+        dynamoDBMapper.delete(weight);
+        return weight;
+    }
 }
