@@ -122,43 +122,15 @@ public class UserDao {
         AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
         DynamoDBMapper dynamoDBMapper = new DynamoDBMapper(client);
 
-        boolean run = true;
-
-        while (run) {
-            //does user email or id exist
-            AttributeValue emailAttributeValue = new AttributeValue().withS(user.getEmail());
-            AttributeValue idAttributeValue = new AttributeValue().withS(user.getId());
-            DynamoDBQueryExpression<User> queryExpression = new DynamoDBQueryExpression<User>()
-                    .withIndexName("email-index")
-                    .withConsistentRead(false)
-                    .withKeyConditionExpression("#id = :id OR #email = :email")
-                    .withExpressionAttributeValues(
-                            new HashMap<String, AttributeValue>() {{
-                                put(":id", idAttributeValue);
-                                put(":email", emailAttributeValue);
-                            }})
-                    .withExpressionAttributeNames(
-                            new HashMap<String, String>() {{
-                                put("#id", "id");
-                                put("#email", "email");
-                            }});
-            List<User> existingUsers = dynamoDBMapper.query(User.class, queryExpression);
-
-            if (!existingUsers.isEmpty()) {
-
-                for (User thisUser : existingUsers) {
-                    if (thisUser.getEmail().equals(user.getEmail())) {
-                        throw new IllegalArgumentException("400-03a: Email already exists.");
-                    } else if (thisUser.getId().equals(user.getId())) {
-                        user.setId(Users.generateId());
-                    }
-                }
-            } else {
-                run = false;
-            }
+        User existingUser = new User();
+        try {
+            existingUser = loadUserByEmail(user);
+        } catch (IllegalArgumentException e) {
+            dynamoDBMapper.save(user);
         }
-
-        dynamoDBMapper.save(user);
+        if (existingUser != null) {
+            throw new IllegalArgumentException("400-03a: Email already exists.");
+        }
         return user;
     }
 }
