@@ -83,6 +83,21 @@ public class UserDaoTest {
         assertThrows(IllegalArgumentException.class, ()-> userDao.saveUser(user));
     }
 
+    @Test
+    void loadUserFromUserId_correctUserId_returnsUser() {
+        //GIVEN
+        String userId = "0b0958a3-7c84-46d2-a56f-069bc37c5a03";
+        User user = new User();
+        user.setId(userId);
+
+        //WHEN
+        User _user = userDao.loadUserByUserId(user);
+
+        //THEN
+        System.out.println(_user);
+        assertTrue(true);
+    }
+
     /*@Test
     void loadUserByEmailAndPassword_correctEntry_returnsUser() {
         //GIVEN

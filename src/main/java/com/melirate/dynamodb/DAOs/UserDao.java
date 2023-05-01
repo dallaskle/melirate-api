@@ -96,6 +96,38 @@ public class UserDao {
         }
     }
 
+    public User loadUserByUserId(User _user) {
+
+        if (_user.getId() == null) { //Needs to have an id
+            throw new IllegalArgumentException("400-11: No User Id included.");
+        }
+
+        AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
+        DynamoDBMapper dynamoDBMapper = new DynamoDBMapper(client);
+
+        AttributeValue idAttributeValue = new AttributeValue().withS(_user.getId());
+
+        DynamoDBQueryExpression<User> queryExpression = new DynamoDBQueryExpression<User>()
+                .withIndexName("id-index")
+                .withConsistentRead(false)
+                .withKeyConditionExpression("#id = :idVal")
+                .withExpressionAttributeNames(Map.of("#id", "id"))
+                .withExpressionAttributeValues(Map.of(
+                        ":idVal", idAttributeValue
+                ));
+
+
+        List<User> existingUsers = dynamoDBMapper.query(User.class, queryExpression);
+
+        if (!existingUsers.isEmpty()) {
+            // a user with matching email and password was found
+            return existingUsers.get(0);
+        } else {
+            // no user with matching email and password was found
+            throw new IllegalArgumentException("400-12: No account found with this User Id.");
+        }
+    }
+
     public User saveUser(User user) {
 
         if (user.getEmail() == null) { //Needs to have an email
@@ -128,7 +160,7 @@ public class UserDao {
         } catch (IllegalArgumentException e) {
             dynamoDBMapper.save(user);
         }
-        if (existingUser != null) {
+        if (existingUser.getEmail() != null) {
             throw new IllegalArgumentException("400-03a: Email already exists.");
         }
         return user;

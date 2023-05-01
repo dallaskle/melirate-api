@@ -42,7 +42,6 @@ public class UserAuthService {
         return new LoginResponse(user, token);
     }
 
-
     public LoginResponse signupWithEmailAndPassword(String email, String password) {
 
         //require valid email
@@ -63,6 +62,15 @@ public class UserAuthService {
 
     }
 
+    public User getUserFromToken(String jwtToken) {
 
+        User user = new User();
+
+        JwtValidator jwtValidator = new JwtValidator();
+        String userId = jwtValidator.pullUserIdFromToken(jwtToken);
+        user.setId(userId);
+
+        return userDao.loadUserByUserId(user);
+    }
 
 }

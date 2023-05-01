@@ -79,4 +79,22 @@ public class UserAuthServiceTest {
         assertNotNull(token);
         assertTrue(jwtValidator.validateToken(token, user.getId()));
     }
+
+    /*@Test
+    public void getUserFromUserId_valid_returnUser() {
+        // GIVEN
+        String userId = "0b0958a3-7c84-46d2-a56f-069bc37c5a03";
+
+        // WHEN
+        LoginResponse loginResponse = userAuthService.getUserFromToken(email, password);
+        String token = loginResponse.getToken();
+        User user = loginResponse.getUser();
+
+        // THEN
+        System.out.println(user.toString());
+        System.out.println(token.toString());
+        assertNotNull(user);
+        assertNotNull(token);
+        assertTrue(jwtValidator.validateToken(token, user.getId()));
+    }*/
 }

@@ -38,4 +38,26 @@ public class JwtValidator {
             return false;
         }
     }
+
+    public String pullUserIdFromToken(String jwtToken) {
+
+        if (jwtToken == null) {
+            throw new NullPointerException("Must include token.");
+        }
+
+        Key key = Keys.hmacShaKeyFor(secretHolder.getSecret().getBytes(StandardCharsets.UTF_8));
+
+        try {
+            Jws<Claims> claimsJws = Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(jwtToken);
+
+            String subject = claimsJws.getBody().getSubject();
+            return subject;
+        } catch (Exception e) {
+            // can't get user id
+            throw new NullPointerException("No User Id in token.");
+        }
+    }
 }
