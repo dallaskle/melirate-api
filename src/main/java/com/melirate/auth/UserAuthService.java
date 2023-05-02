@@ -22,7 +22,7 @@ public class UserAuthService {
         }
 
         User user = new User();
-        user.setEmail(email);
+        user.setEmail(email.toLowerCase());
 
         String token;
 
@@ -46,9 +46,15 @@ public class UserAuthService {
 
         //require valid email
         //require valid password
+        if (email == null) { //Needs to have an email
+            throw new IllegalArgumentException("400-01: Must have email!");
+        }
+        if (password == null) { //Needs to have a password --> can remove if there's forget password option, or email to sign in
+            throw new IllegalArgumentException("400-02: Must have password!");
+        }
 
         User user = new User();
-        user.setEmail(email);
+        user.setEmail(email.toLowerCase());
         user.setPassword(password);
 
         String token;
