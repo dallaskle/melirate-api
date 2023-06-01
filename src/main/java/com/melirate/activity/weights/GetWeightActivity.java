@@ -1,19 +1,18 @@
-package com.melirate.activity;
+package com.melirate.activity.weights;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.melirate.auth.JwtValidator;
 import com.melirate.dynamodb.DAOs.WeightDao;
-import com.melirate.dynamodb.models.User;
 import com.melirate.dynamodb.models.Weight;
 
-import java.util.List;
+import java.util.Map;
 
-public class GetAllWeightActivity implements RequestHandler<APIGatewayProxyRequestEvent, List<Weight>>{
+public class GetWeightActivity implements RequestHandler<APIGatewayProxyRequestEvent, Weight>{
 
     @Override
-    public List<Weight> handleRequest(APIGatewayProxyRequestEvent request, Context context) {
+    public Weight handleRequest(final APIGatewayProxyRequestEvent request, Context context) {
 
         String token;
         String userId;
@@ -29,15 +28,27 @@ public class GetAllWeightActivity implements RequestHandler<APIGatewayProxyReque
             throw new IllegalArgumentException("400-06: Must have user_id.");
         }
 
-        User user = new User();
-        user.setId(userId);
 
         JwtValidator jwtValidator = new JwtValidator();
-        if (!jwtValidator.validateToken(token, user.getId())) {
+        if (!jwtValidator.validateToken(token, userId)) {
             throw new RuntimeException("403: Invalid Token.");
         }
 
+        Map<String, String> params;
+        String timestamp;
+
+        try {
+            params =  request.getQueryStringParameters();
+            timestamp = params.get("timestamp");
+        } catch (Exception e) {
+            throw new NullPointerException("400-07: Must include timestamp.");
+        }
+
+        Weight weight = new Weight();
+        weight.setUserId(userId);
+        weight.setTimestamp(timestamp);
+
         WeightDao weightDao = new WeightDao();
-        return weightDao.loadAllWeights(user.getId());
+        return weightDao.loadWeight(weight);
     }
 }

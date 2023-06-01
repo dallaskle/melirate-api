@@ -1,4 +1,4 @@
-package com.melirate.activity.Requests;
+package com.melirate.activity.weights.Requests;
 
 public class CreateWeightRequest {
 

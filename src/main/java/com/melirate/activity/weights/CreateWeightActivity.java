@@ -1,8 +1,8 @@
-package com.melirate.activity;
+package com.melirate.activity.weights;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.melirate.activity.Requests.CreateWeightRequest;
+import com.melirate.activity.weights.Requests.CreateWeightRequest;
 import com.melirate.auth.JwtValidator;
 import com.melirate.dynamodb.DAOs.WeightDao;
 import com.melirate.dynamodb.models.Weight;
